@@ -5,27 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.service.UserAndRoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 
 @Controller
 public class UserController {
 
-    private final UserAndRoleService userAndRoleService;
+    private final UserService userService;
     @Autowired
-    public UserController(UserAndRoleService userAndRoleService) {
-        this.userAndRoleService = userAndRoleService;
-    }
-
-    @GetMapping("/")
-    public String home(){
-        return "/main";
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
     @GetMapping("/user")
     public String findAll(Model model, Principal principal){
-        model.addAttribute("user", userAndRoleService.findByUsername(principal.getName()));
+        model.addAttribute("user1", userService.findByEmail(principal.getName()));
         return "user";
     }
-
 }

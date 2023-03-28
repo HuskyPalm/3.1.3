@@ -18,11 +18,13 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username ;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private Byte age;
+    private String email;
     private String password;
-    private Integer age;
-
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -33,10 +35,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, Integer age) {
-        this.username = username;
-        this.password = password;
+    public User(String firstName, String lastName, Byte age, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.age = age;
+        this.email = email;
+        this.password = password;
     }
 
     public void addRole(Role role) {
@@ -79,6 +83,10 @@ public class User implements UserDetails {
     }
 
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Long getId() {
         return id;
     }
@@ -87,8 +95,36 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
@@ -106,13 +142,5 @@ public class User implements UserDetails {
     public String getRolesString() {
         String roleSet = roles.stream().map(Role::getRole).collect(Collectors.joining(", "));
         return roleSet.toLowerCase();
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 }
